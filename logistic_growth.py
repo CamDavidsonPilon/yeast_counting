@@ -32,7 +32,9 @@ with pm.Model() as model:
     dilution_shaker1 = pm.Deterministic("dilution_shaker1", yeast_slurry_volume  / (yeast_slurry_volume + shaker1_volume))
     final_dilution_factor = pm.Deterministic("dilution_shaker2", dilution_shaker1 * shaker1_to_shaker2_volume / (shaker1_to_shaker2_volume + shaker2_volume))
 
-    volume_of_chamber = pm.Gamma("volume of chamber (mL)", mu=0.0001, sd=0.0001 / 20)
+    # the manufacturer suggests that depth of the chamber is 0.01cm ± 0.0004cm. Let's assume the worst and double the error.
+    # the length of the square grid is 1mm = 0.1cm, to th volume is 0.01 * 0.1 * 0.1 = 0.0001, with error 0.1 * 0.1 * 0.0004 * 2
+    volume_of_chamber = pm.Normal("volume of chamber (mL)", mu=1e-4, sd=8e-6)
 
     # why is Poisson justified? in my final shaker, I have yeast_conc * final_dilution_factor * shaker3_volume number of yeast
     # I remove volume_of_chamber / shaker3_volume fraction of them, hence it's a binomial with very high count, and very low probability.
