@@ -3,7 +3,7 @@ import pymc3 as pm
 BILLION = 1e9
 TOTAL_SQUARES = 25
 
-squares_counted = 4
+squares_counted = 5
 yeast_counted = 71
 
 
@@ -21,7 +21,7 @@ with pm.Model() as model:
     final_dilution_factor = pm.Deterministic("dilution_shaker2", dilution_shaker1 * shaker1_to_shaker2_volume / (shaker1_to_shaker2_volume + shaker2_volume))
 
     # the manufacturer suggests that depth of the chamber is 0.01cm ± 0.0004cm. Let's assume the worst and double the error.
-    # the length of the square grid is 1mm = 0.1cm, to th volume is 0.01 * 0.1 * 0.1 = 0.0001, with error 0.1 * 0.1 * 0.0004 * 2
+    # the length of the 5x5 square grid is 1mm = 0.1cm, so the volume is 0.01 * 0.1 * 0.1 = 0.0001, with error 0.1 * 0.1 * 0.0004 * 2
     volume_of_chamber = pm.Normal("volume of chamber (mL)", mu=1e-4, sd=8e-6)
 
     # why is Poisson justified? in my final shaker, I have yeast_conc * final_dilution_factor * shaker3_volume number of yeast
@@ -30,9 +30,9 @@ with pm.Model() as model:
 
     number_of_counted_cells = pm.Binomial("number of counted cells", yeast_visible, squares_counted/TOTAL_SQUARES, observed=yeast_counted)
 
-    trace = pm.sample(6000, tune=3500, nuts_kwargs=dict(target_accept=.85))
+    trace = pm.sample(6000, tune=2000)
 
 
-pm.summary(trace, varnames=['cells/mL'])
-pm.plot_posterior(trace, varnames=['cells/mL'])
+pm.summary(trace, var_names=['cells/mL'])
+pm.plot_posterior(trace, var_names=['cells/mL'])
 
