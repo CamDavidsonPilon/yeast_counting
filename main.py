@@ -39,11 +39,11 @@ def generate_model(
 
         number_of_counted_cells = pm.Binomial("number of counted cells", yeast_visible, squares_counted/TOTAL_SQUARES, observed=cells_counted)
 
-        trace = pm.sample(1000, tune=2000, chains=2)
+        trace = pm.sample(1000, tune=2000, chains=2, init='map')
 
     return trace, model
 
-st.title("(Bayesian) Cell Counting Using a Hemocytometer")
+st.header("(Bayesian) Cell Counting Using a Hemocytometer")
 st.markdown("Read the accompanying blog post [here](https://dataorigami.net/blogs/napkin-folding/bayesian-cell-counting).")
 
 st.sidebar.markdown('Enter your observed data here.')
