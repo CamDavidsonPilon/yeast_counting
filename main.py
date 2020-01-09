@@ -48,10 +48,10 @@ st.markdown("Read the accompanying blog post [here](https://dataorigami.net/blog
 
 st.sidebar.markdown('Enter your observed data here.')
 squares_counted = st.sidebar.number_input("Hemocytometer squares counted", value=5)
-cells_counted = st.sidebar.number_input("Cells counted", value=55)
+cells_counted = st.sidebar.number_input("Cells counted", value=20)
 st.sidebar.markdown('---')
 st.sidebar.markdown('Below are other parameters you may wish to change.')
-number_of_serial_dilutions = st.sidebar.slider("Number of dilutions", 0, 5, value=2)
+number_of_serial_dilutions = st.sidebar.slider("Number of dilutions", 0, 5, value=0)
 ml_of_each_dilution = st.sidebar.number_input("mL of each dilution", value=9.)
 ml_of_slurry_transferred = st.sidebar.number_input("mL of slurry transfer between dilutions", value=1.)
 prior_lower_bound = st.sidebar.number_input("Prior conc. lower-bound (Billions)", value=0)
